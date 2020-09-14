@@ -54,6 +54,10 @@ typedef struct SDL_EGL_VideoData
     
     void *(EGLAPIENTRY *eglGetProcAddress) (const char * procName);
     
+    EGLBoolean(EGLAPIENTRY *eglGetConfigs) (EGLDisplay dpy,
+                                  EGLConfig * configs,
+                                  EGLint config_size, EGLint * num_config);
+    
     EGLBoolean(EGLAPIENTRY *eglChooseConfig) (EGLDisplay dpy,
                                   const EGLint * attrib_list,
                                   EGLConfig * configs,

@@ -415,6 +415,7 @@ SDL_EGL_LoadLibraryOnly(_THIS, const char *egl_path)
     LOAD_FUNC(eglTerminate);
     LOAD_FUNC(eglGetProcAddress);
     LOAD_FUNC(eglChooseConfig);
+    LOAD_FUNC(eglGetConfigs);
     LOAD_FUNC(eglGetConfigAttrib);
     LOAD_FUNC(eglCreateContext);
     LOAD_FUNC(eglDestroyContext);
@@ -660,6 +661,7 @@ Attribute attributes[] = {
 
 static void dumpconfig(_THIS, EGLConfig config)
 {
+    SDL_LogSetPriority(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO);
     int attr;
     for (attr = 0 ; attr<sizeof(attributes)/sizeof(Attribute) ; attr++) {
         EGLint value;
@@ -752,6 +754,19 @@ SDL_EGL_ChooseConfig(_THIS)
     }
 
     attribs[i++] = EGL_NONE;
+
+    if (_this->egl_data->eglGetConfigs(_this->egl_data->egl_display,
+        configs, SDL_arraysize(configs),
+        &found_configs) == EGL_FALSE ||
+        found_configs == 0) {
+        return SDL_EGL_SetError("Couldn't find matching EGL config", "eglGetConfigs");
+    }
+
+    for (i = 0; i < found_configs; i++ ) {
+        dumpconfig(_this, configs[i]);
+    }
+
+
 
     if (_this->egl_data->eglChooseConfig(_this->egl_data->egl_display,
         attribs,

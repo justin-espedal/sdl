@@ -117,6 +117,7 @@
 
         <compilerflag value="-DGL_GLEXT_PROTOTYPES" if="android || rpi" />
         <compilerflag value="-DHAVE_LIBC" />
+        <compilerflag value="-DDUMP_EGL_CONFIG"/>
 
         <compilerflag value="-D__IPHONEOS__" if="ios || tvos" />
         <compilerflag value="-D__TVOS__" if="tvos" />
